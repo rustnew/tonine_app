@@ -1,0 +1,9 @@
+[serve]
+port = 3000
+reload = true
+open = true
+
+
+[build]
+file = "index.html"
+

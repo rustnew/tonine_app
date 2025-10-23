@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <style>
+/* Général */
+.page {
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Titre */
+.titrecontainer {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.titretext {
+    font-size: 28px;
+    color: #2c3e50;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Barre d'action (inscription + login) */
+.page > .inscriptioncontainer,
+.page > .logincontainer {
+    display: none; /* Masqué par défaut */
+}
+
+/* Affichage des boutons dans la homepage uniquement */
+div.page > div.inscriptioncontainer,
+div.page > div.logincontainer {
+    display: block;
+}
+
+/* Container pour les boutons en haut à droite */
+.page-header-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+/* Inscription */
+.inscriptioncontainer,
+.logincontainer {
+    display: inline-block;
+}
+
+.inscriptionbutton {
+    padding: 13px 23px;
+    background-color: #1b9309;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    display: flex;
+    flex : 1;
+    gap: 1rem;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: absolute;
+    left: 1170px;
+    top: 50px;
+}
+.inscriptionbutton:hover {
+    background-color: #167a07;
+     gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Login */
+.loginbutton {
+    padding: 13px 23px;
+    background-color: #079141;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    position: absolute;
+    left: 1300px;
+    top: 50px;
+}
+.loginbutton:hover {
+    background-color: #067a37;
+}
+
+.logoutbutton {
+    padding: 13px 23px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    position: absolute;
+    left: 100px;
+    top: 12px;
+}
+.logoutbutton:hover {
+    background-color: #c0392b;
+}
+
+/* Formulaire d'inscription */
+.formcontainer {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 25px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.formtitle {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #2c3e50;
+    font-size: 24px;
+    font-weight: 600;
+}
+.formgroup {
+    margin-bottom: 20px;
+}
+.formlabel {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #34495e;
+    font-size: 15px;
+}
+.forminput {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+.forminput:focus {
+    outline: none;
+    border-color: #1b9309;
+    box-shadow: 0 0 0 3px rgba(27, 147, 9, 0.15);
+}
+.formbutton {
+    width: 100%;
+    padding: 14px;
+    background-color: #1b9309;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+.formbutton:hover {
+    background-color: #167a07;
+}
+.formsuccess {
+    color: #27ae60;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+.formerror {
+    color: #e74c3c;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Formulaire de login */
+.loginformcontainer {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 25px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.logintitle {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #2c3e50;
+    font-size: 24px;
+    font-weight: 600;
+}
+.loginfield {
+    margin-bottom: 20px;
+}
+.loginlabel {
+    font-weight: 600;
+    color: #34495e;
+    font-size: 15px;
+    margin-bottom: 8px;
+    display: block;
+}
+.logininput {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+.logininput:focus {
+    outline: none;
+    border-color: #079141;
+    box-shadow: 0 0 0 3px rgba(7, 145, 65, 0.15);
+}
+.loginbuttonsubmit {
+    width: 100%;
+    padding: 14px;
+    background-color: #1f5a08;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+.loginbuttonsubmit:hover {
+    background-color: #194a06;
+}
+.loginmessage {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Bouton retour */
+.backbutton {
+    margin: 20px 20px 0;
+    padding: 100px 20px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+.backbutton:hover {
+    background-color: #5a6268;
+}
+
+/* ✅ Responsive mobile */
+@media (max-width: 768px) {
+    .page {
+        padding: 15px;
+    }
+
+    .titretext {
+        font-size: 24px;
+    }
+
+    /* Sur mobile, les boutons sont centrés en haut */
+    .page-header-actions {
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .inscriptionbutton,
+    .loginbutton,
+    .logoutbutton {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+
+    .formcontainer,
+    .loginformcontainer {
+        padding: 20px;
+        margin: 15px auto;
+    }
+
+    .formtitle,
+    .logintitle {
+        font-size: 22px;
+    }
+
+    .backbutton {
+        margin: 15px;
+        width: auto;
+    }
+}
+
+/* ✅ Pour les très petits écrans */
+@media (max-width: 480px) {
+    .titretext {
+        font-size: 20px;
+    }
+
+    .inscriptionbutton,
+    .loginbutton,
+    .logoutbutton {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+
+    .forminput,
+    .logininput {
+        padding: 10px;
+        font-size: 16px; /* évite le zoom mobile */
+    }
+
+    .formbutton,
+    .loginbuttonsubmit {
+        padding: 12px;
+        font-size: 16px;
+    }
+}
+
+
+
+
+/* =============== PAGE GÉNÉRALE =============== */
+.tontinepage {
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* =============== TITRE PRINCIPAL =============== */
+.tontinetitle {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* =============== MESSAGES UTILISATEUR =============== */
+.tontinemessage {
+    text-align: center;
+    margin: 15px auto;
+    padding: 12px 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    font-weight: 600;
+    background-color: #e9ecef;
+    color: #495057;
+}
+.tontinemessage:empty {
+    display: none;
+}
+
+/* =============== CONTENEUR FORMULAIRE =============== */
+.tontineformcontainer {
+    max-width: 600px;
+    margin: 0 auto 40px;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #e9ecef;
+}
+
+/* =============== TITRE FORMULAIRE =============== */
+.tontineformtitle {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #2c3e50;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+/* =============== GROUPE DE CHAMPS =============== */
+.tontineformgroup {
+    margin-bottom: 20px;
+}
+
+/* =============== LIBELLÉ DES CHAMPS =============== */
+.tontineformlabel {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #34495e;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+/* =============== CHAMPS DE SAISIE =============== */
+.tontineforminput {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.tontineforminput:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+.tontineforminput::placeholder {
+    color: #adb5bd;
+}
+
+/* =============== MENU DÉROULANT =============== */
+.tontineformselect {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+.tontineformselect:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+/* =============== BOUTON SOUMISSION =============== */
+.tontineformbutton {
+    width: 100%;
+    padding: 14px;
+    background-color: #1b9309;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+.tontineformbutton:hover {
+    background-color: #167a07;
+}
+.tontineformbutton:active {
+    transform: translateY(1px);
+}
+
+/* =============== BOUTON ANNULER =============== */
+.tontineformcancel {
+    width: 100%;
+    padding: 14px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+.tontineformcancel:hover {
+    background-color: #5a6268;
+}
+.tontineformcancel:active {
+    transform: translateY(1px);
+}
+
+/* =============== CONTENEUR LISTE =============== */
+.tontinelistcontainer {
+    margin-top: 40px;
+}
+
+/* =============== TITRE LISTE =============== */
+.tontinelisttitle {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* =============== MESSAGE LISTE VIDE =============== */
+.tontinelistingempty {
+    text-align: center;
+    color: #7f8c8d;
+    font-style: italic;
+    font-size: 18px;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+}
+
+/* =============== GRILLE LISTE =============== */
+.tontinelist {
+    display: grid;
+    gap: 20px;
+}
+
+/* =============== ÉLÉMENT DE LISTE =============== */
+.tontineitem {
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.tontineitem:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+/* =============== EN-TÊTE ÉLÉMENT =============== */
+.tontineitemheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* =============== NOM TONTINE =============== */
+.tontineitemname {
+    margin: 0;
+    font-size: 20px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* =============== STATUT TONTINE =============== */
+.tontineitemstatus {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.status-active { background-color: #d4edda; color: #155724; }
+.status-completed { background-color: #d1ecf1; color: #0c5460; }
+.status-cancelled { background-color: #f8d7da; color: #721c24; }
+
+/* =============== MONTANT PAR MEMBRE =============== */
+.tontineitemamount {
+    margin: 8px 0;
+    color: #34495e;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* =============== NOMBRE MEMBRES =============== */
+.tontineitemmembers {
+    margin: 8px 0;
+    color: #34495e;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* =============== ROUND ACTUEL =============== */
+.tontineitemround {
+    margin: 8px 0;
+    color: #34495e;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* =============== ACTIONS ÉLÉMENT =============== */
+.tontineitemactions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+/* =============== BOUTONS D'ACTION =============== */
+.tontineitembutton {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.2s, transform 0.1s;
+    min-width: 80px;
+    text-align: center;
+}
+.tontineitembutton:hover {
+    transform: translateY(-1px);
+}
+.tontineitembutton:active {
+    transform: translateY(0);
+}
+
+/* =============== BOUTON DÉTAILS =============== */
+.tontineitembutton.details {
+    background-color: #3498db;
+    color: white;
+}
+.tontineitembutton.details:hover {
+    background-color: #2980b9;
+}
+
+/* =============== BOUTON MODIFIER =============== */
+.tontineitembutton.edit {
+    background-color: #f39c12;
+    color: white;
+}
+.tontineitembutton.edit:hover {
+    background-color: #e67e22;
+}
+
+/* =============== BOUTON + ROUND =============== */
+.tontineitembutton.round {
+    background-color: #1abc9c;
+    color: white;
+}
+.tontineitembutton.round:hover {
+    background-color: #16a085;
+}
+
+/* =============== BOUTON SUPPRIMER =============== */
+.tontineitembutton.delete {
+    background-color: #e74c3c;
+    color: white;
+}
+.tontineitembutton.delete:hover {
+    background-color: #c0392b;
+}
+
+/* =============== CONTENEUR DÉTAILS =============== */
+.tontinedetailscontainer {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #e9ecef;
+}
+
+/* =============== TITRE DÉTAILS =============== */
+.tontinedetailstitle {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+/* =============== CONTENU DÉTAILS =============== */
+.tontinedetails {
+    margin-bottom: 20px;
+}
+.tontinedetails p {
+    margin: 12px 0;
+    color: #34495e;
+    font-size: 16px;
+    line-height: 1.5;
+}
+.tontinedetails strong {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* =============== STATUT DANS DÉTAILS =============== */
+.tontinedetailsstatus {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.status-active { background-color: #d4edda; color: #155724; }
+.status-completed { background-color: #d1ecf1; color: #0c5460; }
+.status-cancelled { background-color: #f8d7da; color: #721c24; }
+
+/* =============== BOUTON FERMER DÉTAILS =============== */
+.tontinedetailsback {
+    width: 100%;
+    padding: 12px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 20px;
+    transition: background-color 0.2s;
+}
+.tontinedetailsback:hover {
+    background-color: #5a6268;
+}
+.tontinedetailsback:active {
+    transform: translateY(1px);
+}
+
+/* =============== RESPONSIVE MOBILE =============== */
+@media (max-width: 768px) {
+    .tontinepage {
+        padding: 15px;
+    }
+    
+    .tontinetitle {
+        font-size: 24px;
+    }
+    
+    .tontineformcontainer,
+    .tontinedetailscontainer {
+        padding: 20px;
+    }
+    
+    .tontineitemactions {
+        flex-direction: column;
+    }
+    
+    .tontineitembutton {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .tontinemessage {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .tontineitemname {
+        font-size: 18px;
+    }
+}
+    </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TONTINE</title>
+    <link rel="stylesheet" href="/style.css">
+<link rel="modulepreload" href="/yew_course-bdab6948ce0e0e25.js" crossorigin="anonymous" integrity="sha384-ewlYCDy2l4mQMibNKmgx/JiQEtGL6Qs6Wb4GR3+bx0bqg7DvxToji11SKwPxzLQ0"><link rel="preload" href="/yew_course-bdab6948ce0e0e25_bg.wasm" crossorigin="anonymous" integrity="sha384-JnK+t/mrhw9jtFuwjOJOeJTR0c1+DXoMYff+lRUHkOX05TT74+LLktQTM8SXWV30" as="fetch" type="application/wasm"></head>
+<body>
+
+
+<script type="module">
+import init, * as bindings from '/yew_course-bdab6948ce0e0e25.js';
+const wasm = await init({ module_or_path: '/yew_course-bdab6948ce0e0e25_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script><script>"use strict";
+
+(function () {
+
+    const address = '{{__TRUNK_ADDRESS__}}';
+    const base = '{{__TRUNK_WS_BASE__}}';
+    let protocol = '';
+    protocol =
+        protocol
+            ? protocol
+            : window.location.protocol === 'https:'
+                ? 'wss'
+                : 'ws';
+    const url = protocol + '://' + address + base + '.well-known/trunk/ws';
+
+    class Overlay {
+        constructor() {
+            // create an overlay
+            this._overlay = document.createElement("div");
+            const style = this._overlay.style;
+            style.height = "100vh";
+            style.width = "100vw";
+            style.position = "fixed";
+            style.top = "0";
+            style.left = "0";
+            style.backgroundColor = "rgba(222, 222, 222, 0.5)";
+            style.fontFamily = "sans-serif";
+            // not sure that's the right approach
+            style.zIndex = "1000000";
+            style.backdropFilter = "blur(1rem)";
+
+            const container = document.createElement("div");
+            // center it
+            container.style.position = "absolute";
+            container.style.top = "30%";
+            container.style.left = "15%";
+            container.style.maxWidth = "85%";
+
+            this._title = document.createElement("div");
+            this._title.innerText = "Build failure";
+            this._title.style.paddingBottom = "2rem";
+            this._title.style.fontSize = "2.5rem";
+
+            this._message = document.createElement("div");
+            this._message.style.whiteSpace = "pre-wrap";
+
+            const icon= document.createElement("div");
+            icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#dc3545" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>';
+            this._title.prepend(icon);
+
+            container.append(this._title, this._message);
+            this._overlay.append(container);
+
+            this._inject();
+            window.setInterval(() => {
+                this._inject();
+            }, 250);
+        }
+
+        set reason(reason) {
+            this._message.textContent = reason;
+        }
+
+        _inject() {
+            if (!this._overlay.isConnected) {
+                // prepend it
+                document.body?.prepend(this._overlay);
+            }
+        }
+
+    }
+
+    class Client {
+        constructor(url) {
+            this.url = url;
+            this.poll_interval = 5000;
+            this._overlay = null;
+        }
+
+        start() {
+            const ws = new WebSocket(this.url);
+            ws.onmessage = (ev) => {
+                const msg = JSON.parse(ev.data);
+                switch (msg.type) {
+                    case "reload":
+                        this.reload();
+                        break;
+                    case "buildFailure":
+                        this.buildFailure(msg.data)
+                        break;
+                }
+            };
+            ws.onclose = () => this.onclose();
+        }
+
+        onclose() {
+            window.setTimeout(
+                () => {
+                    // when we successfully reconnect, we'll force a
+                    // reload (since we presumably lost connection to
+                    // trunk due to it being killed, so it will have
+                    // rebuilt on restart)
+                    const ws = new WebSocket(this.url);
+                    ws.onopen = () => window.location.reload();
+                    ws.onclose = () => this.onclose();
+                },
+                this.poll_interval);
+        }
+
+        reload() {
+            window.location.reload();
+        }
+
+        buildFailure({reason}) {
+            // also log the console
+            console.error("Build failed:", reason);
+
+            console.debug("Overlay", this._overlay);
+
+            if (!this._overlay) {
+                this._overlay = new Overlay();
+            }
+            this._overlay.reason = reason;
+        }
+    }
+
+    new Client(url).start();
+
+})()
+</script></body>
+</html>
